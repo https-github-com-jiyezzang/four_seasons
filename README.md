@@ -1,4 +1,4 @@
-# 봄여름가을겨울
+# 봄여름가을겨울https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f469-1f3fb-200d-1f9b2.svg
 퍼스널 컬러 진단
 
 ## 프로젝트 개요
