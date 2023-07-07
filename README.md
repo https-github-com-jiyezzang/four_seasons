@@ -13,18 +13,22 @@
 
 ## 팀소개
 
-    - 팀원 구성 및 역할
+### 팀원 구성 및 역할
+
+![image](https://github.com/https-github-com-jiyezzang/four_seasons/assets/126736427/96155816-56ad-4c5f-8692-6b9dfd6c0ef0)
 
 
 
 
+
+## 플로우 차트
 
  ![image](https://github.com/https-github-com-jiyezzang/four_seasons/assets/126736427/0be31dc7-dfd6-421b-9f73-ff043a187046)
 
 
 ## 요구사항(Requirements)
 
-    - 프로젝트 환경 및 버전
+### 프로젝트 환경 및 버전
 ```python
 import pkg_resources
 import sys
