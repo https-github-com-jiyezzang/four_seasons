@@ -19,7 +19,7 @@
 
 - 요구사항(Requirements)
     - 프로젝트 환경 및 버전
-```
+```python
 import pkg_resources
 import sys
 
@@ -33,7 +33,7 @@ print("Matplotlib 버전:", matplotlib.__version__)
 print("OpenCV 버전:", cv2.__version__)
 print("Pillow 버전:", PIL.__version__)
 ```
-```
+```python
 Python 버전: 3.10.12 (main, Jun  7 2023, 12:45:35) [GCC 9.4.0]
 Google Colab 버전: 1.0.0
 Numpy 버전: 1.22.4
