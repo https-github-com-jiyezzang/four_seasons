@@ -15,7 +15,8 @@
 
 ### 팀원 구성 및 역할
 
-![image](https://github.com/https-github-com-jiyezzang/four_seasons/assets/126736427/96155816-56ad-4c5f-8692-6b9dfd6c0ef0)
+![image](https://github.com/https-github-com-jiyezzang/four_seasons/assets/126736427/b6e35eb3-f8d3-4fda-a24c-ff44a86bac33)
+
 
 
 
