@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # ResNet
+# # ResNet50
 
-# # 4번_웜:쿨 비율 동일x
+# # 웜:쿨 비율 동일x
 # warm_1 740장 + warm_2 2307장 + cool_1 238장 + cool_2 336장, 3007:574, 총 3621장
 
 # ## (1) 라이브러리 및 데이터 불러오기
-
-# In[1]:
-
 
 import tensorflow as tf
 from tensorflow.keras import layers, models
@@ -146,7 +143,7 @@ model = tf.keras.models.Model(inputs=resnet50.input, outputs=output)
 learning_rate = 0.0001
 adam = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
-# 모델 컴파일
+# (4) 모델 컴파일
 model.compile(optimizer= adam,
               loss='sparse_categorical_crossentropy', 
               metrics=['accuracy'])
@@ -176,9 +173,6 @@ model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 
 # ## (5) 모델 학습하기
 
-# In[15]:
-
-
 # early stopping과 checkpoint가 적용된 model.fit
 history = model.fit(
     x_train, y_train, 
@@ -189,34 +183,22 @@ history = model.fit(
 )
 
 
+
 # ## (6) 예측하기
-
-# In[16]:
-
 
 pred = model.predict(x_val)
 pred_class = np.argmax(pred, axis=1)
-
-
-# In[17]:
-
 
 print(pred_class)
 print(y_val)
 print(pred)
 
-
-# In[18]:
-
-
 acc = np.mean(pred_class == y_val)
 print('accuracy: %f' % (acc,))
 
 
+
 # ## loss, accuracy 시각화
-
-# In[19]:
-
 
 import matplotlib.pyplot as plt
 
@@ -239,10 +221,8 @@ plt.legend(['Train', 'Validation'], loc='upper left')
 plt.show()
 
 
+
 # ## confusion_matrix
-
-# In[20]:
-
 
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
@@ -259,223 +239,9 @@ plt.xlabel('Predicted label')
 plt.show()
 
 
+
 # ## classification_report
-
-# In[21]:
-
 
 from sklearn.metrics import classification_report
 
 print(classification_report(y_val, pred_class))
-
-
-# In[ ]:
-
-
-
-
-
-# # 모델 평가
-# # auto labeling vs model
-
-# In[44]:
-
-
-def load_data(img_path, number_of_data=107):  
-    # 웜톤 : 0, 쿨톤 : 1
-    img_size=224
-    color=3
-    #이미지 데이터와 라벨(웜톤 : 0, 쿨톤 : 1) 데이터를 담을 행렬(matrix) 영역을 생성합니다.
-    imgs=np.zeros(number_of_data*img_size*img_size*color,dtype=np.int32).reshape(number_of_data,img_size,img_size,color)
-    labels=np.zeros(number_of_data,dtype=np.int32)
-
-    idx=0    
-    
-    warm_files = list(glob.iglob(img_path + '/warm/*.jpg')) + list(glob.iglob(img_path + '/warm/*.JPG'))
-    
-    for file in warm_files:
-        img = Image.open(file)  # 이미지 열기
-        img = img.resize((img_size, img_size))  # 이미지 크기 조정
-        img = np.array(img, dtype=np.int32)
-        imgs[idx,:,:,:]=img    # 데이터 영역에 이미지 행렬을 복사
-        labels[idx]=0   # 웜톤 : 0
-        idx=idx+1
-
-                
-    cool_files = (list(glob.iglob(img_path + '/cool/*.jpg')) + list(glob.iglob(img_path + '/cool/*.JPG')))
-    
-    for file in cool_files:
-        img = Image.open(file)  # 이미지 열기
-        img = img.resize((img_size, img_size))  # 이미지 크기 조정
-        img = np.array(img, dtype=np.int32)
-        imgs[idx,:,:,:]=img    # 데이터 영역에 이미지 행렬을 복사
-        labels[idx]=1   # 쿨톤 : 1
-        idx=idx+1  
-    
-    print("평가데이터(x_test)의 이미지 개수는", idx,"입니다.")
-    return imgs, labels
-
-image_dir_path = os.getenv("HOME") + "/aiffel/project/first-repository/aiffelthon/content/drive/MyDrive/사계절_연예인 이미지 데이터셋/test data/auto_labeling"
-(x_test, y_test)=load_data(image_dir_path)
-
-print("x_test shape: {}".format(x_test.shape))
-print("y_test shape: {}".format(y_test.shape))
-
-
-# In[45]:
-
-
-y_test
-
-
-# In[47]:
-
-
-x_test = x_test/255
-
-
-# In[ ]:
-
-
-# 모델 불러오기
-# resnet 4번 
-
-
-# In[49]:
-
-
-# checkpoint로 저장한 모델 불러올 때
-from tensorflow.keras.models import load_model
-
-# 체크포인트 파일의 경로를 지정합니다.
-checkpoint_filepath = './check/ResNet/4번/2-1-2/model_17.h5'
-
-# 체크포인트에 저장된 모델을 로드합니다.
-model = load_model(checkpoint_filepath)
-
-
-# In[50]:
-
-
-pred = model.predict(x_test)
-pred_class = np.argmax(pred, axis=1)
-print(pred_class)
-
-
-# In[51]:
-
-
-len(pred_class)
-
-
-# In[52]:
-
-
-acc = np.mean(pred_class == y_test)
-print('accuracy: %f' % (acc,))
-
-
-# In[ ]:
-
-
-
-
-
-# # 수동레이블링 vs model
-
-# In[62]:
-
-
-def load_data(img_path, number_of_data=107):  
-    # 웜톤 : 0, 쿨톤 : 1
-    img_size=224
-    color=3
-    #이미지 데이터와 라벨(웜톤 : 0, 쿨톤 : 1) 데이터를 담을 행렬(matrix) 영역을 생성합니다.
-    imgs=np.zeros(number_of_data*img_size*img_size*color,dtype=np.int32).reshape(number_of_data,img_size,img_size,color)
-    labels=np.zeros(number_of_data,dtype=np.int32)
-
-    idx=0    
-    
-    warm_files = list(glob.iglob(img_path + '/warm/*.jpg')) + list(glob.iglob(img_path + '/warm/*.JPG'))
-    
-    for file in warm_files:
-        img = Image.open(file)  # 이미지 열기
-        img = img.resize((img_size, img_size))  # 이미지 크기 조정
-        img = np.array(img, dtype=np.int32)
-        imgs[idx,:,:,:]=img    # 데이터 영역에 이미지 행렬을 복사
-        labels[idx]=0   # 웜톤 : 0
-        idx=idx+1
-
-                
-    cool_files = (list(glob.iglob(img_path + '/cool/*.jpg')) + list(glob.iglob(img_path + '/cool/*.JPG')))
-    
-    for file in cool_files:
-        img = Image.open(file)  # 이미지 열기
-        img = img.resize((img_size, img_size))  # 이미지 크기 조정
-        img = np.array(img, dtype=np.int32)
-        imgs[idx,:,:,:]=img    # 데이터 영역에 이미지 행렬을 복사
-        labels[idx]=1   # 쿨톤 : 1
-        idx=idx+1  
-    
-    print("평가데이터(x_test)의 이미지 개수는", idx,"입니다.")
-    return imgs, labels
-
-image_dir_path = os.getenv("HOME") + "/aiffel/project/first-repository/aiffelthon/content/drive/MyDrive/사계절_연예인 이미지 데이터셋/test data/manual_labeling"
-(x_test, y_test)=load_data(image_dir_path)
-
-print("x_test shape: {}".format(x_test.shape))
-print("y_test shape: {}".format(y_test.shape))
-
-
-# In[63]:
-
-
-y_test
-
-
-# In[65]:
-
-
-x_test = x_test/255
-
-
-# In[ ]:
-
-
-# 모델 불러오기
-# resnet 4번 
-
-
-# In[67]:
-
-
-# checkpoint로 저장한 모델 불러올 때
-from tensorflow.keras.models import load_model
-
-# 체크포인트 파일의 경로를 지정합니다.
-checkpoint_filepath = './check/ResNet/4번/2-1-2/model_17.h5'
-
-# 체크포인트에 저장된 모델을 로드합니다.
-model = load_model(checkpoint_filepath)
-
-
-# In[68]:
-
-
-pred = model.predict(x_test)
-pred_class = np.argmax(pred, axis=1)
-print(pred_class)
-
-
-# In[69]:
-
-
-len(pred_class)
-
-
-# In[70]:
-
-
-acc = np.mean(pred_class == y_test)
-print('accuracy: %f' % (acc,))
-
