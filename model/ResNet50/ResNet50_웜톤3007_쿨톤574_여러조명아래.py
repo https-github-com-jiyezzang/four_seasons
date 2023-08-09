@@ -6,6 +6,8 @@
 # # 웜:쿨 비율 동일x
 # warm_1 740장 + warm_2 2307장 + cool_1 238장 + cool_2 336장, 3007:574, 총 3621장
 
+
+
 # ## (1) 라이브러리 및 데이터 불러오기
 
 import tensorflow as tf
@@ -19,10 +21,8 @@ import glob
 from PIL import Image
 
 
-# ## 데이터 불러오고, 웜톤 0, 쿨톤 1로 레이블링
 
-# In[2]:
-
+# ## (2) 데이터 불러오고, 웜톤 0, 쿨톤 1로 레이블링
 
 def load_data(img_path, number_of_data=3621):  # warm_1 740 + warm_2 2307 + cool_1 238 + cool_2 336
     # 웜톤 : 0, 쿨톤 : 1
@@ -68,18 +68,14 @@ print("x_train shape: {}".format(x_train.shape))
 print("y_train shape: {}".format(y_train.shape))
 
 
-# ## 정규화
 
-# In[3]:
-
+# ## (3) 정규화
 
 x_train = x_train / 255.0
 
 
-# ## (3) train, val 분리하기
 
-# In[4]:
-
+# ## (4) train, val 분리하기
 
 from sklearn.model_selection import train_test_split
 
@@ -94,35 +90,13 @@ print("x_val: ", x_val.shape)
 print("y_val: ", y_val.shape)
 
 
-# In[ ]:
 
+# ## (5) 사전학습 모델 불러오기
 
-# 2-1-2
-
-
-# ## (4) 모델 정의 및 컴파일
-
-# In[10]:
-
-
-print("x_train: ", x_train.shape)
-print("y_train: ", y_train.shape)
-print("x_val: ", x_val.shape)
-print("y_val: ", y_val.shape)
-
-
-# ## 정규화, random_state=42, batch_size=32, epochs=50, learning rate=0.0001(네번째자리),
-
-# In[11]:
-
-
-# 사전학습된 ResNet
+# 사전학습 ResNet50 불러오기
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Flatten, Dense, GlobalAveragePooling2D, Dropout
 from keras import optimizers, initializers, regularizers, metrics
-
-
-# In[12]:
 
 
 # ResNet-50 모델 불러오기
@@ -133,32 +107,32 @@ x = Dense(1024, activation='relu')(x)
 x = Dense(512, activation='relu')(x)
 output = Dense(2, activation='softmax')(x)
 
+
 # 새로운 모델 정의
 model = tf.keras.models.Model(inputs=resnet50.input, outputs=output)
 
 
-# In[13]:
 
+# ## (6) 모델 컴파일
 
 learning_rate = 0.0001
 adam = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
-# (4) 모델 컴파일
+
 model.compile(optimizer= adam,
               loss='sparse_categorical_crossentropy', 
               metrics=['accuracy'])
 
 
-# In[14]:
 
-
-# early stopping, checkpoint
+# ## (7) early stopping, checkpoint
 early_stopping_callback = tf.keras.callbacks.EarlyStopping(
     monitor='val_loss',
     patience=10,
     verbose=1,
     restore_best_weights=True,
 )
+
 
 model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     './check/ResNet/4번/2-1-2/model_{epoch:02d}.h5',
@@ -171,7 +145,8 @@ model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 )
 
 
-# ## (5) 모델 학습하기
+
+# ## (8) 모델 학습하기
 
 # early stopping과 checkpoint가 적용된 model.fit
 history = model.fit(
@@ -184,7 +159,7 @@ history = model.fit(
 
 
 
-# ## (6) 예측하기
+# ## (9) 예측하기
 
 pred = model.predict(x_val)
 pred_class = np.argmax(pred, axis=1)
@@ -198,7 +173,7 @@ print('accuracy: %f' % (acc,))
 
 
 
-# ## loss, accuracy 시각화
+# ## (10) val_loss, val_accuracy 시각화
 
 import matplotlib.pyplot as plt
 
@@ -222,7 +197,7 @@ plt.show()
 
 
 
-# ## confusion_matrix
+# ## (11) confusion_matrix
 
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
@@ -240,7 +215,7 @@ plt.show()
 
 
 
-# ## classification_report
+# ## (12) classification_report
 
 from sklearn.metrics import classification_report
 
