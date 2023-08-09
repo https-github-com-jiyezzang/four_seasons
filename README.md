@@ -1,5 +1,5 @@
 # 봄여름가을겨울🌷
-U-Net을 사용하여 피부 영역을 Segmentation 하고 VGG16을 통해 퍼스널 컬러 진단
+ResNet50(ImageNet pretrained)을 사용한 퍼스널 컬러 웜톤, 쿨톤 이진분류
 
 ## 프로젝트 개요
 
