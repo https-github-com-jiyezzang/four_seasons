@@ -19,7 +19,8 @@ ResNet50(ImageNet pretrained)을 사용한 퍼스널 컬러 웜톤, 쿨톤 이�
 
 ### 팀원 구성 및 역할
 
-![image](https://github.com/https-github-com-jiyezzang/four_seasons/assets/126736427/b6e35eb3-f8d3-4fda-a24c-ff44a86bac33)
+
+![봄여름가을겨울_모두의컬러_발표ppt_수정완료](https://github.com/https-github-com-jiyezzang/four_seasons/assets/70656219/1117cc46-9608-4e93-a0ce-aaeef439b6ad)
 
 
 
