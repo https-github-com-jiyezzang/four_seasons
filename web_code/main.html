@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Color Analysis</title>
+    <style>
+        body {
+            background-image: url('https://www.allurekorea.com/wp_data/allure/2017/03/style_58dd151b02778-e1490883874409-700x500-1490883900.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 43px;
+            font-weight: bold;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #000;
+        }
+
+        .main {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .image-container {
+            margin-bottom: 20px;
+        }
+
+        #imagePreview img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+
+        .predict-button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #001f3f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+       <main class="main">
+        <div class="image-container">
+            <h1 style="font-size: 24px; margin-bottom: 10px;">Welcome to Mycolor</h1>
+            <form action="/predict" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" required><br>
+                <div id="imagePreview"></div>
+                <input type="Submit" value="Predict" class="predict-button">
+            </form>
+        </div>
+    <script>
+            function showImagePreview(event) {
+                const fileInput = event.target;
+                const imagePreview = document.getElementById('imagePreview');
+                if (fileInput.files.length > 0) {
+                   const file = fileInput.files[0];
+                    const image = document.createElement('img');
+                    image.src = URL.createObjectURL(file);
+                    imagePreview.innerHTML = ''; // Clear previous preview
+                    imagePreview.appendChild(image);
+                } else {
+                    imagePreview.innerHTML = ''; // Clear preview if no file selected
+                }
+            }
+
+            const fileInput = document.querySelector('input[type="file"]');
+            fileInput.addEventListener('change', showImagePreview);
+        </script>
+       </main>
+</body>
+</html>
