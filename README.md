@@ -26,9 +26,8 @@ ResNet50(ImageNet pretrained)을 사용한 퍼스널 컬러 웜톤, 쿨톤 이�
 
 
 
-## 플로우 차트
-
- ![image](https://github.com/https-github-com-jiyezzang/four_seasons/assets/126736427/0be31dc7-dfd6-421b-9f73-ff043a187046)
+## 프로젝트 진행 과정
+![01](https://github.com/https-github-com-jiyezzang/four_seasons/assets/70656219/44a7dd8a-f62a-450a-b8c3-155ee643aba3)
 
 
 ## 요구사항(Requirements)
